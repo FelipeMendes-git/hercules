@@ -133,7 +133,7 @@ class Audio:
     saida: str = ""
     limiar_vad: float = 0.5  # 0 a 1: quanto maior, mais certeza de que é fala
     silencio_fim_ms: int = 800  # silêncio que encerra uma fala
-    fala_minima_ms: int = 300
+    fala_minima_ms: int = 200  # voz mínima para valer (um "Hércules" rápido e sozinho tem pouca voz)
     fala_maxima_s: float = 45.0
     pre_fala_ms: int = 300
     sons: bool = True

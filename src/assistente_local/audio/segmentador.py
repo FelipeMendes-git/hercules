@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import logging
 import math
 from collections import deque
 from dataclasses import dataclass
@@ -10,6 +11,8 @@ import numpy as np
 
 TAXA = 16000
 JANELA = 512  # 32 ms
+
+log = logging.getLogger(__name__)
 
 
 @dataclass
@@ -40,7 +43,7 @@ class Segmentador:
         self,
         limiar: float = 0.5,
         silencio_fim_ms: int = 800,
-        fala_minima_ms: int = 300,
+        fala_minima_ms: int = 200,
         fala_maxima_s: float = 45.0,
         pre_fala_ms: int = 300,
         janelas_para_comecar: int = 3,
@@ -109,8 +112,11 @@ class Segmentador:
         curta = self._fala < self.n_minimo
         resposta_esperada = self._inicio_voz <= self.curtas_ate
         suficiente = not curta or (resposta_esperada and self._fala >= self.n_minimo_curto)
-        inicio, inicio_voz = self._inicio, self._inicio_voz
+        inicio, inicio_voz, fala = self._inicio, self._inicio_voz, self._fala
+        minimo = self.n_minimo_curto if resposta_esperada else self.n_minimo
         self.reiniciar()
+        if not suficiente and partes:
+            log.info("Fala curta descartada (%d ms de voz, mínimo %d ms).", round(fala * self.dur_janela * 1000), round(minimo * self.dur_janela * 1000))
         if not suficiente or not partes:
             return None
         return Fala(np.concatenate(partes).astype(np.float32, copy=False), inicio, agora, inicio_voz, curta)

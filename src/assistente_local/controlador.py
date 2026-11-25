@@ -1002,7 +1002,10 @@ class Controlador:
                 self.cfg.ativacao.nome,
             )
             texto_previa = previa.texto.strip()
-            if not texto_previa or (durante_fala and parece_eco(texto_previa, texto_falado)):
+            if not texto_previa:
+                log.info("Modelo leve não entendeu nada (%.1f s de áudio).", fala.duracao)
+                return
+            if (durante_fala and parece_eco(texto_previa, texto_falado)):
                 return
             if self._parada_leniente.eh_parada(texto_previa):
                 log.info("Palavra de parar (modelo leve): %s", texto_previa)
