@@ -98,6 +98,10 @@ scripts\iniciar.bat
 
 Na primeira vez, o app baixa os modelos de voz (~340 MB) e de reconhecimento (~1,6 GB).
 
+> 💡 **Quer ajuda para instalar?** Entregue este README para uma IA com acesso ao terminal (o próprio
+> Claude Code, por exemplo) e peça para ela instalar o Hércules para você. Ela consegue seguir os
+> passos daqui. Só o login na sua conta do Claude é com você: ele abre o navegador para você entrar.
+
 ## 💬 Exemplos do que dá para pedir
 
 | Você diz | O que acontece |
