@@ -59,6 +59,13 @@ agenda e responde perguntas. A resposta aparece na janela e é lida em voz alta,
       Saudações sorteadas com uma vinheta de rock composta pelo próprio app, e "jabuticabal" para mandá-lo dormir.
     </td>
   </tr>
+  <tr>
+    <td colspan="3" valign="top">
+      <h3>🎵 Música e volume sem gastar tokens</h3>
+      "Próxima música", "volta a música", "pausa", "aumenta o volume"... O próprio app resolve na hora, sem chamar o Claude:
+      não gasta tokens nem uso da sua assinatura. Funciona com o YouTube Music, o Spotify ou o que estiver tocando, sem trocar de janela (dá para usar no meio de um jogo em tela cheia).
+    </td>
+  </tr>
 </table>
 
 ## ⚙️ Como funciona
@@ -271,7 +278,8 @@ outro programa ganha. Tudo isso fica em **⚙ → Desempenho**.
   ninguém fala sem querer. Só vale quando é praticamente tudo o que você disse: "procura um
   restaurante em Jaboticabal" é um pedido e segue para o Claude. Dá para trocar a palavra em
   **⚙ → Ativação**.
-- **Música e volume** o próprio app resolve, na hora, com ou sem o nome e sem chamar o Claude:
+- **Música e volume** o próprio app resolve, na hora, com ou sem o nome e sem chamar o Claude (por
+  isso não gastam tokens nem uso da assinatura):
   "próxima música", "volta a música", "pausa a música", "continua a música", "aumenta o volume",
   "abaixa o volume" (com "um pouco" ou "muito" para ajustar o tanto). A música é a que estiver tocando
   (YouTube Music no navegador, Spotify...), pelo painel de mídia do Windows, sem trocar de janela: dá
