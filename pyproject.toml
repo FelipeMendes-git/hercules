@@ -18,6 +18,11 @@ dependencies = [
     "PySide6-Essentials>=6.8",
     "tomli-w>=1.0",
     "pywin32>=306; sys_platform == 'win32'",
+    # Controle de música (painel de mídia do Windows): pular, voltar, pausar sem trocar de janela.
+    "winrt-runtime>=3.0; sys_platform == 'win32'",
+    "winrt-Windows.Media.Control>=3.0; sys_platform == 'win32'",
+    "winrt-Windows.Foundation>=3.0; sys_platform == 'win32'",
+    "winrt-Windows.Foundation.Collections>=3.0; sys_platform == 'win32'",
 ]
 
 [project.optional-dependencies]

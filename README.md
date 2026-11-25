@@ -112,6 +112,7 @@ Na primeira vez, o app baixa os modelos de voz (~340 MB) e de reconhecimento (~1
 | "Hércules, olha a minha tela. Que erro é esse?" | Tira um print e explica o que está vendo |
 | "Hércules, desfaz o que você fez." | Volta as alterações do último pedido |
 | "Jabuticabal." | Para tudo na hora e volta a cochilar |
+| "Próxima música." / "Abaixa o volume." | O próprio app pula a música ou muda o volume, sem chamar o Claude |
 
 ## 🛠️ Feito com
 
@@ -265,11 +266,17 @@ outro programa ganha. Tudo isso fica em **⚙ → Desempenho**.
   direto, comandos com o seu "sim" por voz (ou sem perguntar, no modo **Automático** de
   **⚙ → Claude → Permissões**). O app guarda o histórico das conversas, como sempre.
 - **"Jabuticabal"** interrompe o Claude e a fala na hora e põe o Hércules para **dormir** (a bolinha
-  fica lilás), **sem precisar dizer o nome**. Para falar com ele de novo, chame "Hércules". É a única
-  ordem do próprio app (o Claude não consegue se interromper sozinho) e é de propósito uma palavra que
+  fica lilás), **sem precisar dizer o nome**. Para falar com ele de novo, chame "Hércules". É uma das
+  poucas ordens do próprio app (o Claude não consegue se interromper sozinho) e é de propósito uma palavra que
   ninguém fala sem querer. Só vale quando é praticamente tudo o que você disse: "procura um
   restaurante em Jaboticabal" é um pedido e segue para o Claude. Dá para trocar a palavra em
   **⚙ → Ativação**.
+- **Música e volume** o próprio app resolve, na hora, com ou sem o nome e sem chamar o Claude:
+  "próxima música", "volta a música", "pausa a música", "continua a música", "aumenta o volume",
+  "abaixa o volume" (com "um pouco" ou "muito" para ajustar o tanto). A música é a que estiver tocando
+  (YouTube Music no navegador, Spotify...), pelo painel de mídia do Windows, sem trocar de janela: dá
+  para usar com um jogo em tela cheia. O volume é o geral do Windows. Como a palavra de parar, só vale
+  quando a frase é só o comando: "o volume da reunião estava alto" é conversa.
 
 ### Saudação
 

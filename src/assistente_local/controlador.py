@@ -21,7 +21,7 @@ from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Awaitable, Callable
 
-from . import caminhos, modelos, texto_fala, voz
+from . import caminhos, midia, modelos, texto_fala, voz
 from . import config as cfgmod
 from . import eventos as ev
 from .ativacao import (
@@ -1012,6 +1012,9 @@ class Controlador:
                 await self._dormir_agora()
                 return
             deteccao_previa = self._detector_leniente.detectar(texto_previa)
+            # Música e volume: o app faz sozinho, com ou sem o nome, sem acordar nem chamar o Claude.
+            if await self._tentar_midia(deteccao_previa.comando if deteccao_previa.ativado else texto_previa):
+                return
             if not deteccao_previa.ativado:
                 log.info("Ouvi sem o nome (%.2f s, modelo leve): %s", previa.tempo_s, texto_previa)
                 self._emitir(ev.FalaIgnorada(texto_previa, "não chamou pelo nome"))
@@ -1057,6 +1060,8 @@ class Controlador:
             log.info("Palavra de parar: %s", texto)
             await self._dormir_agora()
             return
+        if self._aprovacao is None and await self._tentar_midia(deteccao.comando if deteccao.ativado else texto):
+            return
 
         if self._aprovacao is not None:
             # O eco da própria voz já saiu acima (pelas palavras); um "sim" logo depois da pergunta vale.
@@ -1083,6 +1088,18 @@ class Controlador:
             return
         self._emitir(ev.FalaIgnorada(texto, "não chamou pelo nome"))
 
+    async def _tentar_midia(self, texto: str) -> bool:
+        """Se a frase é só um comando de música ou volume, faz na hora e devolve True."""
+        comando = midia.interpretar_midia(texto)
+        if comando is None:
+            return False
+        acao, passos = comando
+        log.info("Comando de mídia (%s): %s", acao, texto)
+        ok = await midia.executar(acao, passos)
+        if not ok:
+            self._som("erro")
+        return True
+
     def _acordado_sem_nome(self) -> bool:
         """O nome só acorda: acordado, ele assume que toda fala é com ele (até a palavra de parar)."""
         a = self.cfg.ativacao
@@ -1107,6 +1124,8 @@ class Controlador:
         if comando and self._parada.eh_parada(comando):  # a única ordem que o app trata sozinho
             self._emitir(ev.FalaUsuario(texto_ouvido or comando, origem))
             await self._dormir_agora()
+            return
+        if origem != "voz" and await self._tentar_midia(comando):  # digitado na janela
             return
         self._acordar()
         saudando = self._tarefa_saudacao is not None and not self._tarefa_saudacao.done()
