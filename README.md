@@ -1,20 +1,125 @@
-# Hércules
+<div align="center">
 
-Assistente de voz para Windows que leva o que você fala até o **Claude Code** e lê a resposta em
-voz alta. Você chama pelo nome ("Hércules, …"), pede o que quiser e o Claude Code faz o trabalho
-no seu PC: lê e edita arquivos, roda comandos, responde perguntas e até controla o próprio app. O
-app só faz a ponte. Ele não decide nada sozinho além de reconhecer o nome, a palavra de parar ("jabuticabal"), a de mandar ("câmbio") e o seu "sim" ou
-"não" nas permissões.
+<img src="https://capsule-render.vercel.app/api?type=waving&color=0:131a4a,50:3a2a8a,100:f5a524&height=210&section=header&text=H%C3%A9rcules&fontColor=ffffff&fontSize=72&fontAlignY=36&desc=Assistente%20de%20voz%20para%20o%20Claude%20Code&descAlignY=58&descSize=22" width="100%" alt="Hércules, assistente de voz para o Claude Code" />
 
+**Você fala, o Claude Code trabalha no seu PC e responde em voz alta.**
+
+<img src="https://img.shields.io/badge/Windows-10%20%7C%2011-131a4a?style=for-the-badge&logo=windows&logoColor=white" />
+<img src="https://img.shields.io/badge/Python-3.12-131a4a?style=for-the-badge&logo=python&logoColor=ffd43b" />
+<img src="https://img.shields.io/badge/Claude%20Code-Agent%20SDK-D97757?style=for-the-badge&logo=anthropic&logoColor=white" />
+<br />
+<img src="https://img.shields.io/badge/Whisper-reconhecimento%20local-3a2a8a?style=for-the-badge" />
+<img src="https://img.shields.io/badge/Kokoro-voz%20em%20pt--BR-f5a524?style=for-the-badge&labelColor=131a4a" />
+<img src="https://img.shields.io/badge/PySide6-interface-41CD52?style=for-the-badge&logo=qt&logoColor=white&labelColor=131a4a" />
+
+<br /><br />
+
+<a href="https://github.com/FelipeMendes-git/hercules/blob/main/docs/midia/hercules-demonstracao.mp4">
+  <img src="docs/midia/capa-video.png" width="85%" alt="Assista à demonstração do Hércules" />
+</a>
+
+<sub>Clique na imagem para ver o vídeo de demonstração (1 min 22 s).</sub>
+
+</div>
+
+---
+
+## ✨ O que ele faz
+
+Chame **"Hércules"** e peça o que quiser, falando normalmente. O pedido vai para o **Claude Code**, que faz o
+trabalho de verdade no seu computador: lê e edita arquivos, roda comandos, mexe em projetos, consulta sua
+agenda e responde perguntas. A resposta aparece na janela e é lida em voz alta, em português do Brasil.
+
+<table>
+  <tr>
+    <td width="33%" valign="top">
+      <h3>🎙️ Só pela voz</h3>
+      Chame pelo nome e fale. Pode parar para pensar: ele espera você terminar, ou mande na hora dizendo <b>"câmbio"</b>.
+    </td>
+    <td width="33%" valign="top">
+      <h3>🧠 Claude Code de verdade</h3>
+      Não é um chatbot: é o mesmo Claude Code do terminal, com acesso aos seus projetos e pedindo permissão por voz quando é arriscado.
+    </td>
+    <td width="33%" valign="top">
+      <h3>🔒 Voz 100% local</h3>
+      Detecção de fala, reconhecimento (Whisper) e voz sintética (Kokoro) rodam no seu PC. Só o pedido vai para o Claude.
+    </td>
+  </tr>
+  <tr>
+    <td valign="top">
+      <h3>🫧 Bolinha flutuante</h3>
+      Uma bolha colorida que ondula com o som e muda de cor conforme o estado: ouvindo, pensando, trabalhando, falando.
+    </td>
+    <td valign="top">
+      <h3>💤 Quase não pesa</h3>
+      Em espera usa ~0,2 GB de RAM e ~0% de processador. Acorda em 2 a 3 segundos quando você chama.
+    </td>
+    <td valign="top">
+      <h3>🎸 Personalidade</h3>
+      Saudações sorteadas com uma vinheta de rock composta pelo próprio app, e "jabuticabal" para mandá-lo dormir.
+    </td>
+  </tr>
+</table>
+
+## ⚙️ Como funciona
+
+```mermaid
+flowchart LR
+    A["🗣️ Você<br/>&quot;Hércules, ...&quot;"] --> B["👂 Silero VAD<br/>detecta a fala"]
+    B --> C["📝 Whisper<br/>fala vira texto"]
+    C --> D["🤖 Claude Code<br/>faz o trabalho"]
+    D --> E["🔊 Kokoro<br/>resposta em voz alta"]
+    D --> F["🖥️ Janela<br/>resposta completa"]
 ```
-"Hércules, ..." → detecção de voz → Whisper (texto) → Claude Code → resposta
-                                                                    ↓
-            você ouve o resumo (Kokoro) ← linha <falar> ←───────────┘   e vê tudo na janela
+
+1. **Espera leve:** um modelo pequeno (Whisper tiny, no processador) fica só procurando o nome.
+2. **Acorda:** ao ouvir "Hércules", carrega o reconhecimento preciso (Whisper large-v3-turbo, na placa de vídeo).
+3. **Entende:** quando você para de falar (ou diz "câmbio"), o pedido vira texto e vai para o Claude Code pelo **Claude Agent SDK**.
+4. **Trabalha:** o Claude Code usa as ferramentas dele no projeto escolhido e também controla o próprio app (trocar de projeto, abrir arquivos, ver a tela, desfazer).
+5. **Responde:** a resposta completa aparece na janela e um resumo curto é falado pela voz do Kokoro.
+
+## 🚀 Começando
+
+**Requisitos:** Windows 10 ou 11, Python 3.12, uma conta do Claude (Pro ou Max) e, de preferência, placa de vídeo NVIDIA.
+
+```powershell
+# 1. Instale o Claude Code e faça login com a sua conta do Claude
+irm https://claude.ai/install.ps1 | iex
+claude auth login --claudeai
+
+# 2. Baixe o Hércules e instale
+git clone https://github.com/FelipeMendes-git/hercules.git
+cd hercules
+powershell -ExecutionPolicy Bypass -File scripts\instalar.ps1
+
+# 3. Abra
+scripts\iniciar.bat
 ```
 
-Tudo o que é voz roda no seu PC: detecção de fala (Silero VAD), reconhecimento (Whisper
-large-v3-turbo, na placa de vídeo quando dá) e voz sintética (Kokoro, em português do Brasil). O
-Claude Code também roda no PC; o modelo Claude responde pela internet, como no Claude Desktop.
+Na primeira vez, o app baixa os modelos de voz (~340 MB) e de reconhecimento (~1,6 GB).
+
+## 💬 Exemplos do que dá para pedir
+
+| Você diz | O que acontece |
+|---|---|
+| "Hércules, muda o título do meu site para branco." | O Claude edita o código e avisa quando terminou |
+| "Hércules, marca uma reunião amanhã às 15h." | Cria o evento na sua agenda |
+| "Hércules, vai pro projeto do portfólio e me diz o que falta." | Troca de projeto e analisa o código |
+| "Hércules, olha a minha tela. Que erro é esse?" | Tira um print e explica o que está vendo |
+| "Hércules, desfaz o que você fez." | Volta as alterações do último pedido |
+| "Jabuticabal." | Para tudo na hora e volta a cochilar |
+
+## 🛠️ Feito com
+
+- **[Claude Agent SDK](https://docs.claude.com/en/docs/agent-sdk/overview)**: a ponte com o Claude Code, sessões e permissões
+- **[faster-whisper](https://github.com/SYSTRAN/faster-whisper)**: reconhecimento de fala na placa de vídeo
+- **[Kokoro](https://github.com/thewh1teagle/kokoro-onnx)**: voz sintética em português do Brasil
+- **[Silero VAD](https://github.com/snakers4/silero-vad)**: detecção de voz
+- **[PySide6](https://doc.qt.io/qtforpython-6/)**: janela, bolinha animada e bandeja
+
+---
+
+# 📖 Guia completo
 
 ## Antes de usar: login no Claude Code
 
